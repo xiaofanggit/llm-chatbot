@@ -7,7 +7,7 @@ export class LLMController {
     constructor(private llmService: LLMService) {}
     
     async handleMessage(req: Request, res: Response) {
-        const message = req.body.message;
+        const message = req.body.message
         if (!message) {
             return res.status(400).json({error: "Message is missed"});
         }

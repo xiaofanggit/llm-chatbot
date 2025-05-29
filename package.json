@@ -4,13 +4,16 @@
     "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^9.27.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.0",
-    "prepare": "husky"
+    "lint-staged": "^16.1.0"
   },
   "lint-staged": {
-  "src/**/*.ts": [
-    "eslint --fix",
-    "prettier --write"
-  ]
-}
+    "service-chatbot/src/**/*.ts": [
+      "cd service-chatbot && eslint --fix",
+      "cd service-chatbot && prettier --write"
+    ],
+    "client-web/src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
 }
