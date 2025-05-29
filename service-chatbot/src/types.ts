@@ -1,6 +1,5 @@
-// Type identifiers for DI
 const TYPES = {
-    LLMService: Symbol.for("LLMService")
+  LLMService: Symbol.for("LLMService"),
 };
 
-export default TYPES;
+export { TYPES };

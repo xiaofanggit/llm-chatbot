@@ -1,21 +1,18 @@
-// Entry point for the backend
+import "reflect-metadata";
 import express from "express";
+import { InversifyExpressServer } from "inversify-express-utils";
+import bodyParser from "body-parser";
 import cors from "cors";
-import bodyParser = require("body-parser");
-import { LLMController } from "./controllers/LLMController";
-import container from "./inversify.config";
-import { Request, Response } from "express";
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+import { container } from "./inversify.config.js"; // 👈 NOTE `.js` here
+import "./controllers/LLMController.js"; // 👈 NOTE `.js` here
 
-const llmController = container.get(LLMController);
-
-app.post("/api/chat", async (req: Request, res: Response) => {
-    llmController.handleMessage(req, res).catch((err) => {
-    console.error("Unhandled error in controller:", err);
-    res.status(500).json({ error: "Unexpected server error" });
-  });
+const server = new InversifyExpressServer(container);
+server.setConfig((app: express.Application) => {
+  app.use(cors());
+  app.use(bodyParser.json());
 });
 
-app.listen(3001, () => console.log("API server on http://localhost:3001"));
+const app = server.build();
+app.listen(3001, () => {
+  console.log("Server running at http://localhost:3001");
+});

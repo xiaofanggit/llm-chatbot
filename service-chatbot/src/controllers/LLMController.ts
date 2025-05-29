@@ -1,21 +1,25 @@
-import { LLMService } from "../services/LLMService";
-import { injectable } from "inversify";
+import { controller, httpPost, request, response } from "inversify-express-utils";
+import { inject } from "inversify";
+import { TYPES } from "../types.js";
 import { Request, Response } from "express";
+import { LLMService } from "../services/LLMService.js";
 
-@injectable()
+@controller("/api/chat")
 export class LLMController {
-    constructor(private llmService: LLMService) {}
-    
-    async handleMessage(req: Request, res: Response) {
-        const message = req.body.message
-        if (!message) {
-            return res.status(400).json({error: "Message is missed"});
-        }
-        try {
-            const response = await this.llmService.query(message);
-            res.json({ response });
-        } catch (error){
-            res.status(500).json({error: `LLM call failed ${JSON.stringify(error)}`});
-        }
+  constructor(@inject(TYPES.LLMService) private llmService: LLMService) {}
+
+  @httpPost("/")
+  async handleMessage(@request() req: Request, @response() res: Response) {
+    const message = req.body?.message;
+    if (!message) {
+      return res.status(400).json({ error: "Message is required" });
     }
+
+    try {
+      const reply = await this.llmService.query(message);
+      return res.json({ response: reply });
+    } catch (err) {
+      return res.status(500).json({ error: "LLM call failed", details: err });
+    }
+  }
 }
