@@ -3,9 +3,9 @@ import express from "express";
 import { InversifyExpressServer } from "inversify-express-utils";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { container } from "./inversify.config.js"; // 👈 NOTE `.js` here
-import "./controllers/LLMController.js"; // 👈 NOTE `.js` here
+import { container } from "./inversify.config";
 
+import "./controllers/LLMController";
 const server = new InversifyExpressServer(container);
 server.setConfig((app: express.Application) => {
   app.use(cors());

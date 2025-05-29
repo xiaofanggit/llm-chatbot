@@ -1,8 +1,8 @@
+import { injectable, inject } from "inversify";
 import { controller, httpPost, request, response } from "inversify-express-utils";
-import { inject } from "inversify";
-import { TYPES } from "../types.js";
 import { Request, Response } from "express";
-import { LLMService } from "../services/LLMService.js";
+import { LLMService } from "../services/LLMService";
+import { TYPES } from "../types";
 
 @controller("/api/chat")
 export class LLMController {

@@ -1,12 +1,13 @@
 {
-  "type": "module",
+  "type": "commonjs",
   "name": "service-chatbot",
   "version": "1.0.0",
   "description": "Backend for LLM chatbot using Node.js, Express, InversifyJS",
   "main": "dist/index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "dev": "node --loader ts-node/esm src/index.ts",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "lint": "eslint src",
     "lint:fix": "eslint --fix",
     "format": "prettier --write \"src/**/*.ts\""
