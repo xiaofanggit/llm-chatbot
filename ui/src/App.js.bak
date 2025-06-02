@@ -1,0 +1,97 @@
+import './App.css';
+import axios from 'axios';
+import React, { useState } from 'react';
+// import logo from './logo.svg'; // Uncomment if you have a logo to display
+// import { Chatbot } from './components/Chatbot'; // Uncomment if you have a separate Chatbot component
+
+function Chatbot() {
+    return ( 
+      <div className="Chatbot">
+        <h2>Chatbot Component</h2>
+        <div>
+          {
+          console.log("cccChat messages:", chatMessages)
+          }
+          { 
+          chatMessages.map((msg, index) => (
+            <div key={index} className="message">
+              <p><strong>User:</strong> {msg.user}</p>
+              <p><strong>Bot:</strong> {msg.bot}</p>
+            </div>
+          ))}
+        </div>
+        <p>This is where the chatbot functionality will go.</p>
+        <input value={inputMessage} placeholder='Type the message...' onKeyDown={(e) => 
+          {
+            if (e.key === "Enter") {
+              e.preventDefault(); // Prevent form submit or line breaks
+              sendMessage()
+            }
+        }}
+
+          onChange={(e)=>setInputMessage(e.target.value)}/>
+        <button onClick={sendMessage}>Ask</button>
+      </div>
+    );
+  }
+function App() {
+
+  const [inputMessage, setInputMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  // function Chatbot() {
+  //   return ( 
+  //     <div className="Chatbot">
+  //       <h2>Chatbot Component</h2>
+  //       <div>
+  //         {
+  //         console.log("cccChat messages:", chatMessages)
+  //         }
+  //         { 
+  //         chatMessages.map((msg, index) => (
+  //           <div key={index} className="message">
+  //             <p><strong>User:</strong> {msg.user}</p>
+  //             <p><strong>Bot:</strong> {msg.bot}</p>
+  //           </div>
+  //         ))}
+  //       </div>
+  //       <p>This is where the chatbot functionality will go.</p>
+  //       <input value={inputMessage} placeholder='Type the message...' onKeyDown={(e) => 
+  //         {
+  //           if (e.key === "Enter") {
+  //             e.preventDefault(); // Prevent form submit or line breaks
+  //             sendMessage()
+  //           }
+  //       }}
+
+  //         onChange={(e)=>setInputMessage(e.target.value)}/>
+  //       <button onClick={sendMessage}>Ask</button>
+  //     </div>
+  //   );
+  // }
+  const sendMessage = async() => {
+    if (inputMessage.trim() === "") {
+      return; // Prevent sending empty messages
+    }
+
+    try {
+      console.log("Sending message:", inputMessage);
+      const response = await axios.post('http://localhost:3001/api/chat', { message: inputMessage });
+      console.log("Response from server:", response.data);
+      setChatMessages([...chatMessages, { user: inputMessage, bot: response.data }]);
+      setInputMessage(""); // Clear the input field after sending
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  }
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>Welcome to my chatbot.Feel free to ask any questions and I will give you an answers</p>
+      </header>
+      <Chatbot />
+    </div>
+  );
+}
+
+export default App;

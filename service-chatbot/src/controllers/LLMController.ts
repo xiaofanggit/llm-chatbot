@@ -1,4 +1,4 @@
-import { injectable, inject } from "inversify";
+import { inject } from "inversify";
 import { controller, httpPost, request, response } from "inversify-express-utils";
 import { Request, Response } from "express";
 import { LLMService } from "../services/LLMService";
